@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Palak</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Segoe UI,sans-serif;overflow:hidden;background:linear-gradient(-45deg,#f7d7e6,#fdf6fa,#f5e8f0,#fff8fc);background-size:400% 400%;animation:bg 18s ease infinite}
+@keyframes bg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px}
+.hidden{display:none}
+
+.pink3d{
+color:#b0307d;
+font-weight:900;
+text-shadow:1px 1px 0 #fff,2px 2px 0 #ffb6d9,3px 3px 0 #ff8fc8,4px 4px 0 #ff69b4,8px 8px 15px rgba(0,0,0,.25);
+}
+
+.card{
+background:rgba(255,255,255,.88);
+backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+border-radius:30px;
+padding:40px;
+max-width:900px;
+box-shadow:0 20px 60px rgba(0,0,0,.12); border:1px solid rgba(255,255,255,.65);
+}
+
+.btn,.glowbtn{
+padding:18px 40px;border:none;border-radius:999px;
+font-size:22px;font-weight:900;cursor:pointer;
+background:white;
+}
+.glowbtn{animation:pulse 2.8s infinite}
+@keyframes pulse{50%{transform:scale(1.08)}}
+
+.gift{font-size:160px;animation:bounce 1.8s infinite}
+@keyframes bounce{50%{transform:translateY(-20px)}}
+
+.float{position:absolute;animation:float linear infinite}
+@keyframes float{from{transform:translateY(100vh)}to{transform:translateY(-120px) rotate(360deg)}}
+
+#balloons{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.balloon{font-size:75px;cursor:pointer}
+
+.count{font-size:100px;font-weight:900}
+
+.cake{font-size:160px;animation:spin 6s linear infinite}
+@keyframes spin{from{transform:rotateY(0)}to{transform:rotateY(360deg)}}
+
+.confetti{position:absolute;animation:fall linear infinite}
+@keyframes fall{from{transform:translateY(-100px)}to{transform:translateY(110vh)}}
+
+#message{
+max-width:950px;
+font-size:20px;
+line-height:1.8;
+}
+
+/* ===== Fully Responsive Upgrade ===== */
+body{
+overflow-x:hidden;
+overflow-y:auto;
+}
+
+img,video,audio{
+max-width:100%;
+height:auto;
+}
+
+.card{
+width:min(95%,900px);
+}
+
+#message{
+width:100%;
+}
+
+@media (max-width:1024px){
+.gift,.cake{font-size:120px;}
+.count{font-size:80px;}
+}
+
+@media (max-width:768px){
+.screen{padding:15px;}
+.card{padding:20px;width:95%;}
+
+.gift,.cake{font-size:90px;}
+.count{font-size:60px;}
+
+#balloons{
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+}
+
+.balloon{font-size:50px;}
+
+.btn,.glowbtn{
+font-size:16px;
+padding:14px 24px;
+}
+
+#message{
+font-size:16px;
+line-height:1.6;
+}
+
+h1{font-size:clamp(28px,8vw,50px)!important;}
+h2{font-size:clamp(20px,6vw,35px)!important;}
+}
+
+@media (max-width:480px){
+.gift,.cake{font-size:70px;}
+.count{font-size:48px;}
+.balloon{font-size:42px;}
+#balloons{gap:8px;}
+.card{padding:16px;}
+}
+
+</style>
+</head>
+<body>
+<div id="loader" style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(-45deg,#f7d7e6,#fdf6fa,#f5e8f0,#fff8fc)">
+<div style="font-size:80px">🎁</div>
+<h2 style="font-family:Segoe UI,sans-serif">Loading Your Surprise...</h2>
+</div>
+
+
+<div id="fx"></div>
+
+<div id="p1" class="screen">
+<div class="card">
+<div class="gift">🎁</div>
+<h1 class="pink3d" style="font-size:60px">HERE IS A SPECIAL GIFT FROM ARIHANT</h1>
+<p class="pink3d" style="font-size:26px;margin:15px">Made with lots of love and wishes just for you 💖</p>
+<div id="countdown" class="count pink3d">3</div>
+<button class="btn" onclick="startGame()">OPEN MY GIFT</button>
+</div>
+</div>
+
+<div id="p2" class="screen hidden">
+<h1 class="pink3d">🎈 POP ALL 16 BALLOONS 🎈</h1>
+<h2 class="pink3d"><span id="score">0</span>/16</h2><br>
+<div id="balloons"></div>
+</div>
+
+<div id="p3" class="screen hidden">
+<h1 class="pink3d" style="font-size:70px">🎉 CELEBRATION TIME 🎉</h1>
+<div class="cake">🎂</div>
+<div style="font-size:80px">🎊 🎉 🥳 🎉 🎊</div>
+<br>
+<div class="glowbtn pink3d" onclick="giftReveal()">🎁 CLICK FOR THE SPECIAL GIFT 🎁</div>
+</div>
+
+<div id="p4" class="screen hidden">
+<div class="gift">🎁</div>
+<h1 class="pink3d" style="font-size:60px">A MAGICAL GIFT AWAITS YOU</h1>
+<br>
+<div class="glowbtn pink3d" onclick="showMessage()">✨ OPEN THE BIRTHDAY MESSAGE ✨</div>
+</div>
+
+<div id="p5" class="screen hidden">
+<audio id="song" controls autoplay>
+<source src="birthday-song.mp3" type="audio/mpeg">
+</audio>
+
+<h1 class="pink3d" style="font-size:75px">🎉 HAPPY BIRTHDAY PALAK 🎂</h1>
+<div class="cake">🎂</div>
+
+<div id="message" class="card pink3d">
+🎉 Happy Birthday, Palak! 🎉<br><br>
+I'm so lucky to know someone as genuine and wonderful as you. Your kindness, warmth, and beautiful heart make every conversation brighter and every day a little better. You have this amazing ability to make people feel comfortable, valued, and cared for, and that's something truly special.<br><br>
+I hope this year brings you endless happiness, countless reasons to smile, and all the success and love you deserve. No matter where life takes us, I hope you always remember how appreciated and cherished you are by the people around you.<br><br>
+Thank you for being such a wonderful friend. May your birthday be filled with laughter, love, unforgettable memories, and everything that makes your heart happy.<br><br>
+Wishing you the happiest birthday ever! ❤️🎂✨🎉
+</div>
+</div>
+
+<script>
+for(let i=0;i<5;i++){
+let e=document.createElement('div');
+e.className='float';
+e.innerHTML=Math.random()>0.7?'💖':'✨';
+e.style.left=Math.random()*100+'vw';
+e.style.fontSize=(20+Math.random()*20)+'px';
+e.style.animationDuration=(12+Math.random()*10)+'s';
+fx.appendChild(e);
+}
+
+for(let i=0;i<6;i++){
+let c=document.createElement('div');
+c.className='confetti';
+c.innerHTML=['🎉','🎊','✨','💖'][Math.floor(Math.random()*4)];
+c.style.left=Math.random()*100+'vw';
+c.style.animationDuration=(10+Math.random()*8)+'s';
+document.body.appendChild(c);
+}
+
+let cd=3;
+setInterval(()=>{
+if(cd>1){cd--;countdown.innerText=cd;}
+},1000);
+
+function startGame(){
+p1.classList.add('hidden');
+p2.classList.remove('hidden');
+}
+
+let popped=0;
+for(let i=0;i<16;i++){
+let b=document.createElement('div');
+b.className='balloon';
+b.innerHTML='🎈';
+b.onclick=()=>{
+if(b.dataset.done)return;
+b.dataset.done=1;
+b.innerHTML='💥';
+popped++;
+score.innerText=popped;
+if(popped===16){
+setTimeout(()=>{
+p2.classList.add('hidden');
+p3.classList.remove('hidden');
+},1000);
+}
+};
+balloons.appendChild(b);
+}
+
+function giftReveal(){
+p3.classList.add('hidden');
+p4.classList.remove('hidden');
+}
+
+function showMessage(){
+p4.classList.add('hidden');
+p5.classList.remove('hidden');
+song.play().catch(()=>{});
+}
+
+window.addEventListener('load',()=>{
+setTimeout(()=>{
+const l=document.getElementById('loader');
+if(l){l.style.opacity='0';l.style.transition='0.6s';
+setTimeout(()=>l.remove(),600);}
+},800);
+});
+
+document.documentElement.style.scrollBehavior='smooth';
+</script>
+</body>
+</html>
